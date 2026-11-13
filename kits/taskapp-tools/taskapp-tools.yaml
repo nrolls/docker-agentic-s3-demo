@@ -1,0 +1,36 @@
+# syntax=docker/sandbox-kit:3
+#
+# A v3 mixin for the task app. Add it to any agent with:
+#   sbx run --clone --name taskapp-kit --kit ./kits/taskapp-tools claude .
+#
+# It packages three things that would otherwise be manual setup:
+#   1. a tool (ruff, a Python linter)
+#   2. a network rule (the one external API this project uses)
+#   3. team instructions the agent reads before it starts
+schemaVersion: "3"
+kind: mixin
+displayName: Task app team tools
+
+args:
+  ruff_version:
+    default: "0.8.4"
+    pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
+    buildArg: RUFF_VERSION
+
+provides: ["ruff@${{ kit.args.ruff_version }}"]
+
+build: |
+  FROM python:3.13-slim AS build
+  ARG RUFF_VERSION
+  RUN pip install --no-cache-dir "ruff==${RUFF_VERSION}"
+
+  FROM scratch
+  COPY --from=build /usr/local/bin/ruff /usr/local/bin/ruff
+  COPY taskapp-tools-context.md /usr/share/sandbox/kit/taskapp-tools/taskapp-tools-context.md
+
+capabilities:
+  - type: com.docker.sandbox/network-policy@1
+    config:
+      runtime:
+        allow:
+          - date.nager.at:443

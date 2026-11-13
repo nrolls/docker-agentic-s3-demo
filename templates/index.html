@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Task app | Docker Sandboxes demo</title>
+<style>
+  :root { --deep:#00153C; --ocean:#2560FF; --light:#D9E5FC; --grey:#6C7E9D; --white:#FFFFFF; --offblack:#0F121B; --line:#EEF2F8; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Inter, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--deep); color: var(--white); }
+  main { max-width: 720px; margin: 0 auto; padding: 48px 20px; }
+  .eyebrow { color: var(--light); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; font-weight: 600; }
+  h1 { font-size: 34px; margin: 8px 0 4px; }
+  .sub { color: var(--light); margin: 0 0 28px; }
+  .card { background: var(--white); color: var(--offblack); border-radius: 14px; padding: 20px; }
+  form.add { display: flex; gap: 8px; margin-bottom: 16px; }
+  input[type=text] { flex: 1; padding: 10px 12px; border: 1px solid var(--light); border-radius: 8px; font: inherit; }
+  button { background: var(--ocean); color: var(--white); border: 0; border-radius: 8px; padding: 8px 14px; font: inherit; font-weight: 600; cursor: pointer; }
+  button.ghost { background: transparent; color: var(--grey); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li.task { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 4px; border-top: 1px solid var(--line); }
+  li.task.done .title { color: var(--grey); text-decoration: line-through; }
+  .actions { display: flex; gap: 4px; }
+  .actions form { margin: 0; }
+  li.empty { color: var(--grey); padding: 12px 4px; }
+  .count { color: var(--grey); font-size: 14px; margin: 0 0 8px; }
+  .error { background: #FDECEC; color: #9B1C1C; padding: 8px 12px; border-radius: 8px; }
+  footer { margin-top: 20px; color: var(--light); font-size: 13px; }
+  code { font-family: "Courier New", monospace; }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Docker Onboarding &middot; Session 3</div>
+  <h1>Hey, Session 3 attendees &#128075;</h1>
+  <p class="sub">This is the starting point. An agent in a Docker Sandbox is about to build on it.</p>
+  <div class="card">
+    $error_html
+    <form class="add" method="post" action="/tasks">
+      <input type="text" name="title" placeholder="What needs doing?" maxlength="200" required>
+      <button type="submit">Add task</button>
+    </form>
+    <p class="count">$open_count open &middot; $total_count total</p>
+    <ul>
+      $tasks_html
+    </ul>
+  </div>
+  <footer>Running on Python $python_version &middot; $machine &middot; JSON API at <code>/api/tasks</code></footer>
+</main>
+</body>
+</html>
